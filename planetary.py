@@ -69,6 +69,14 @@ for planet in planets:
     else:
         print(color+"%s %s %s %s (%.2fAU)" % (planet.name, planet.az, planet.alt, planet.mag, planet.earth_distance), end="")
     print(" Transit time: %.2d:%.2d:%.2d" % (ephem.localtime(planet.transit_time).hour, ephem.localtime(planet.transit_time).minute, ephem.localtime(planet.transit_time).second))
+
+    if planet.name=="Moon":
+        print(color+"Next new Moon: %s" % ephem.next_new_moon(x))
+        print(color+"Next first quarter Moon: %s" % ephem.next_first_quarter_moon(x))
+        print(color+"Next full Moon: %s" % ephem.next_full_moon(x))
+        print(color+"Next last quarter Moon: %s" % ephem.next_last_quarter_moon(x))
+        print(color+"Moon distance from earth: %.2f meters\n" % (planet.earth_distance * 1.496e11))
+    
     if planet.name=="Sun":
         if planet.alt>0:
             print("Sunset: %s" % (ephem.localtime(observer.next_setting(planet))))
