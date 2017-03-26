@@ -75,8 +75,7 @@ for planet in planets:
         print(color+"Next first quarter Moon: %s" % ephem.next_first_quarter_moon(x))
         print(color+"Next full Moon: %s" % ephem.next_full_moon(x))
         print(color+"Next last quarter Moon: %s" % ephem.next_last_quarter_moon(x))
-        print(color+"Moon distance from earth: %.2f meters\n" % (planet.earth_distance * 1.496e11))
-    
+        print(color+"Moon distance from earth: %.2f meters\n" % (planet.earth_distance * ephem.meters_per_au))
     if planet.name=="Sun":
         if planet.alt>0:
             print("Sunset: %s" % (ephem.localtime(observer.next_setting(planet))))
