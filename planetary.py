@@ -103,18 +103,22 @@ print(bcolors.ENDC)
 # from pprint import pprint
 # pprint (vars(ephem))
 
-#plot initialization and display
-ax = plt.subplot(111, polar=True)
+try:
+    #plot initialization and display
+    ax = plt.subplot(111, polar=True)
 
-ax.set_theta_direction(-1) #clockwise
-ax.set_theta_offset(math.pi/2) #put 0 degrees (north) at top of plot
-ax.yaxis.set_ticklabels(["80","70","60","50","40","30","20","10"], fontsize=6) #hide radial tick labels
-ax.grid(True)
-title = str(l)
-ax.set_title(title, va='bottom')
-ax.scatter(theta_plot,r_plot,picker=True)
-for label, xpt, ypt in zip(labels, theta_plot, r_plot):
-    ax.text(xpt-0.04, ypt, label)
-# fig.canvas.mpl_connect('pick_event', onpick)
-ax.set_rmax(90.0)
-plt.show()
+    ax.set_theta_direction(-1) #clockwise
+    ax.set_theta_offset(math.pi/2) #put 0 degrees (north) at top of plot
+    ax.yaxis.set_ticklabels(["80","70","60","50","40","30","20","10"], fontsize=6) #hide radial tick labels
+    ax.grid(True)
+    title = str(l)
+    ax.set_title(title, va='bottom')
+    ax.scatter(theta_plot,r_plot,picker=True)
+    for label, xpt, ypt in zip(labels, theta_plot, r_plot):
+        ax.text(xpt-0.04, ypt, label)
+        # fig.canvas.mpl_connect('pick_event', onpick)
+    ax.set_rmax(90.0)
+    plt.show()
+except:
+    print("Can't seem to open a window for sky chart")
+    
