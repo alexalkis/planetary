@@ -1,7 +1,8 @@
+import math
 import ephem
 from datetime import datetime
 import time
-
+import matplotlib.pyplot as plt
 
 class bcolors:
     HEADER = '\033[95m'
@@ -57,10 +58,18 @@ planets = [
 
 ]
 
+theta_plot = []
+r_plot = []
+labels = []
+
 for planet in planets:
     planet.compute(observer)
     if planet.alt > 0:
         color = bcolors.Green
+        theta_plot.append(planet.az)
+        foo = 90-(90* (planet.alt / ephem.halfpi))
+        r_plot.append(foo)
+        labels.append(planet.name)
     else:
         color = bcolors.Red
 
@@ -93,3 +102,19 @@ print(bcolors.ENDC)
 
 # from pprint import pprint
 # pprint (vars(ephem))
+
+#plot initialization and display
+ax = plt.subplot(111, polar=True)
+
+ax.set_theta_direction(-1) #clockwise
+ax.set_theta_offset(math.pi/2) #put 0 degrees (north) at top of plot
+ax.yaxis.set_ticklabels(["80","70","60","50","40","30","20","10"], fontsize=6) #hide radial tick labels
+ax.grid(True)
+title = str(l)
+ax.set_title(title, va='bottom')
+ax.scatter(theta_plot,r_plot,picker=True)
+for label, xpt, ypt in zip(labels, theta_plot, r_plot):
+    ax.text(xpt-0.04, ypt, label)
+# fig.canvas.mpl_connect('pick_event', onpick)
+ax.set_rmax(90.0)
+plt.show()
