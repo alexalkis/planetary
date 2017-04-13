@@ -77,12 +77,13 @@ for planet in planets:
         print(color + "%s %s %s %s (Moon phase %.2f)" % (
         planet.name, planet.az, planet.alt, planet.mag, planet.moon_phase), end="")
     else:
-        print(color + "%s %s %s %s (%.2fAU)" % (planet.name, planet.az, planet.alt, planet.mag, planet.earth_distance),
-              end="")
-    print(" Transit time: %.2d:%.2d:%.2d" % (
-    ephem.localtime(planet.transit_time).hour, ephem.localtime(planet.transit_time).minute,
-    ephem.localtime(planet.transit_time).second))
+        print(color + "%s %s %s %s (%.2fAU)" % (planet.name, planet.az, planet.alt, planet.mag, planet.earth_distance), end="")
 
+    if (planet.transit_time!=None):
+        print(" Transit time: %.2d:%.2d:%.2d" % (ephem.localtime(planet.transit_time).hour, ephem.localtime(planet.transit_time).minute,ephem.localtime(planet.transit_time).second))
+    else:
+        print("")
+        
     if planet.name == "Moon":
         print(color + "Next new Moon: %s" % ephem.next_new_moon(x))
         print(color + "Next first quarter Moon: %s" % ephem.next_first_quarter_moon(x))
