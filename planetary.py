@@ -3,6 +3,8 @@ import ephem
 from datetime import datetime
 import time
 import matplotlib.pyplot as plt
+from ephem import Observer
+
 
 class bcolors:
     HEADER = '\033[95m'
@@ -34,12 +36,12 @@ def datetime_from_utc_to_local(utc_datetime):
 #     res.y = 100
 
 
-l = datetime.now()
+localTime = datetime.now()
 x = datetime.utcnow()
-print(l)
+print(localTime)
 
-#observer = ephem.Observer()
-observer = ephem.city('Athens')
+# observer = ephem.Observer()
+observer: Observer = ephem.city('Athens')
 observer.date = ephem.Date(x).tuple()
 
 # print observer.date
@@ -67,7 +69,7 @@ for planet in planets:
     if planet.alt > 0:
         color = bcolors.Green
         theta_plot.append(planet.az)
-        foo = 90-(90* (planet.alt / ephem.halfpi))
+        foo = 90 - (90 * (planet.alt / ephem.halfpi))
         r_plot.append(foo)
         labels.append(planet.name)
     else:
@@ -75,15 +77,18 @@ for planet in planets:
 
     if planet.name == "Moon":
         print(color + "%s %s %s %s (Moon phase %.2f)" % (
-        planet.name, planet.az, planet.alt, planet.mag, planet.moon_phase), end="")
+            planet.name, planet.az, planet.alt, planet.mag, planet.moon_phase), end="")
     else:
-        print(color + "%s %s %s %s (%.2fAU)" % (planet.name, planet.az, planet.alt, planet.mag, planet.earth_distance), end="")
+        print(color + "%s %s %s %s (%.2fAU)" % (planet.name, planet.az, planet.alt, planet.mag, planet.earth_distance),
+              end="")
 
-    if (planet.transit_time!=None):
-        print(" Transit time: %.2d:%.2d:%.2d" % (ephem.localtime(planet.transit_time).hour, ephem.localtime(planet.transit_time).minute,ephem.localtime(planet.transit_time).second))
+    if planet.transit_time != None:
+        print(" Transit time: %.2d:%.2d:%.2d" % (
+        ephem.localtime(planet.transit_time).hour, ephem.localtime(planet.transit_time).minute,
+        ephem.localtime(planet.transit_time).second))
     else:
         print("")
-        
+
     if planet.name == "Moon":
         print(color + "Next new Moon: %s" % ephem.next_new_moon(x))
         print(color + "Next first quarter Moon: %s" % ephem.next_first_quarter_moon(x))
@@ -100,7 +105,6 @@ for planet in planets:
 
 print(bcolors.ENDC)
 
-
 # from pprint import pprint
 # pprint (vars(ephem))
 
@@ -108,15 +112,15 @@ try:
     # plot initialization and display
     ax = plt.subplot(111, polar=True)
 
-    ax.set_theta_direction(-1) # clockwise
-    ax.set_theta_offset(math.pi/2) # put 0 degrees (north) at top of plot
-    ax.yaxis.set_ticklabels(["80","70","60","50","40","30","20","10"], fontsize=6) # hide radial tick labels
+    ax.set_theta_direction(-1)  # clockwise
+    ax.set_theta_offset(math.pi / 2)  # put 0 degrees (north) at top of plot
+    ax.yaxis.set_ticklabels(["80", "70", "60", "50", "40", "30", "20", "10"], fontsize=10)  # hide radial tick labels
     ax.grid(True)
-    title = str(l)
+    title = str(localTime)
     ax.set_title(title, va='bottom')
-    ax.scatter(theta_plot,r_plot,picker=True)
+    ax.scatter(theta_plot, r_plot, picker=True)
     for label, xpt, ypt in zip(labels, theta_plot, r_plot):
-        ax.text(xpt-0.04, ypt, label)
+        ax.text(xpt - 0.04, ypt, label)
         # fig.canvas.mpl_connect('pick_event', onpick)
     ax.set_rmax(90.0)
     plt.show()
