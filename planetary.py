@@ -82,10 +82,11 @@ for planet in planets:
         print(color + "%s %s %s %s (%.2fAU)" % (planet.name, planet.az, planet.alt, planet.mag, planet.earth_distance),
               end="")
 
-    if planet.transit_time != None:
+    if observer.next_transit(planet) is not None:
+        ntd = observer.next_transit(planet)
         print(" Transit time: %.2d:%.2d:%.2d" % (
-        ephem.localtime(planet.transit_time).hour, ephem.localtime(planet.transit_time).minute,
-        ephem.localtime(planet.transit_time).second))
+            ephem.localtime(ntd).hour, ephem.localtime(ntd).minute,
+            ephem.localtime(ntd).second))
     else:
         print("")
 
